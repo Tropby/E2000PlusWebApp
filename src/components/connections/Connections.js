@@ -7,7 +7,7 @@ class Connections extends React.Component {
         return (
             <div className="page">
                 <h1>Device</h1>
-                <Connection connection={this.props.connection} />
+                <Connection connection={this.props.connection} setRooms={this.props.setRooms} setCategories={this.props.setCategories} setLogger={this.props.setLogger} />
             </div>
         );
     }

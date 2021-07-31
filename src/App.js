@@ -22,27 +22,48 @@ class App extends React.Component {
         categories: [],
         ports: [],
         loggers: [],
-        connection: new E2000API("192.168.222.92", 443)
+        connection: new E2000API(window.location.hostname, (window.location.port ? window.location.port : (window.location.protocol == "https:" ? 443 : 80)))
     }
 
     constructor() {
         super();
-        setTimeout(
-            function refreshTokens() {
-                this.state.connection.refreshToken();
+        setInterval(
+            function () {
+                if (!this.state.connection.isConnected)
+                {
+                    window.location.href = "/app/index.htm#/devices";
+                }
+                this.state.connection.refreshToken().then((token) => { }, (error) => { });
             }.bind(this),
             5000
         );
-        this.updatePort = this.updatePort.bind(this);
+
+        this.setRooms = this.setRooms.bind(this);
+        this.setCategories = this.setCategories.bind(this);
+        this.setLogger = this.setLogger.bind(this);
     }
 
-    getData(id, start, end) {
-        return this.state.connection.loggerData(id, start, end);
+    setRooms(rooms)
+    {
+        this.setState(
+            {
+                rooms: rooms
+            }
+        )
     }
 
-    updatePort(type, id, port, value) {
-        this.state.connection.setPort(type, id, port, value);
-    };
+    setLogger(logger)
+    {
+        this.setState({ loggers: logger });
+    }
+
+    setCategories(categories) {
+        this.setState(
+            {
+                categories: categories
+            }
+        )
+    }
 
     componentDidMount() {
         let state = this.state;
@@ -110,84 +131,11 @@ class App extends React.Component {
                     break;
             }
         }.bind(this);
-
-        this.state.connection.login("admin", "a25kj69s").then(
-            function(){
-                state.connection.portData().then((data) => {
-
-                    state.connection.logger().then((data) => {
-
-                        data.logger.forEach(e => {
-                            e.getData = this.getData.bind(this);
-                        });
-                        this.setState({ loggers: data.logger });                        
-                    });
-
-
-                    let rooms = [];
-                    let categories = [];
-                    let knownRooms = [];
-                    let knownCategories = [];
-
-                    data.ports.forEach(element => {
-
-                        element.outputs.forEach(out => {
-                            out.updatePort = this.updatePort
-                        });
-
-                        if (!knownRooms.includes(element.vars.ROOM))
-                        {
-                            if (element.vars.ROOM !== "" && typeof element.vars.ROOM !== "undefined") {
-                                knownRooms.push(element.vars.ROOM);
-                                let o = {
-                                    name: element.vars.ROOM,
-                                    ports: []
-                                };
-                                rooms.push(o);
-                            }
-                        }
-
-                        if (!knownCategories.includes(element.vars.CATEGORIE)) {
-
-                            if (element.vars.CATEGORIE !== "" && typeof element.vars.CATEGORIE !== "undefined")
-                            {
-                                knownCategories.push(element.vars.CATEGORIE);
-                                let o = {
-                                    name: element.vars.CATEGORIE,
-                                    ports: []
-                                };
-                                categories.push(o);
-                            }
-                        }
-                        
-                        if (element.vars.ROOM)
-                        {
-                            let room = rooms.find(e => e.name === element.vars.ROOM);
-                            room.ports.push(element);
-                        }
-
-                        if (element.vars.CATEGORIE)
-                        {
-                            let category = categories.find(e => e.name === element.vars.CATEGORIE);
-                            category.ports.push(element);
-                        }
-                    });
-
-                    this.setState(
-                        {
-                            rooms: rooms,
-                            categories: categories
-                        }
-                    )
-
-                    state.connection.webSocketConnect();
-                });
-            }.bind(this)
-        );
     }
 
     render() {
         return (
+            <>
             <Router>
                 <Switch>
                     <Route exact path="/">
@@ -196,7 +144,7 @@ class App extends React.Component {
                         </div>
                     </Route>
                     <Route path="/devices">
-                        <Connections connection={this.state.connection} />
+                        <Connections connection={this.state.connection} setRooms={this.setRooms} setCategories={this.setCategories} setLogger={this.setLogger} />
                     </Route>
                     <Route path="/rooms">
                         <Rooms rooms={this.state.rooms} />
@@ -214,7 +162,8 @@ class App extends React.Component {
                     <Link to="/categories">Categories</Link>
                     <Link to="/loggers">Logger</Link>
                 </div>
-            </Router>
+                </Router>
+            </>
         );
     }
 }

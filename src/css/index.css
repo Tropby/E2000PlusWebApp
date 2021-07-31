@@ -7,7 +7,7 @@ body, html {
     background-position: center;
     background-repeat: no-repeat;
     color: #eee;
-    height: calc( 100% );
+    height: calc( 100%);
     overflow: scroll;
 }
 
@@ -116,14 +116,40 @@ code {
     border-radius: 1em;
 }
 
-input[type=text], input[type=date], input[type=time] {
+input[type=text], input[type=date], input[type=time], input[type=password] {
     width: calc(100% - 50px);
     padding: 10px;
     margin: 10px;
     border-radius: 5px;
 }
 
+.button {
+    width: calc(100% - 25px);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
 .connectionLink {
     display: flex !important;
     justify-content: space-between;
+}
+
+.react-datetime-picker {
+    width: calc( 100% - 20px );
+    margin: 10px;
+}
+
+.state
+{
+    left: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    position: fixed;
+    border: 1px solid #111;
+    border-radius: 10px;
+    background-color: #FFF;
 }

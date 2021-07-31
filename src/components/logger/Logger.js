@@ -147,7 +147,7 @@ class LoggerR extends React.Component {
             <div style={{ overflow: "hidden" }}>
                 <h2>{this.props.logger.name}</h2>
                 <Line data={this.getChartData} options={this.state.options} />
-                <button onClick={this.updateData}>Update</button>
+                <button className="button" onClick={this.updateData}>Update</button>
             </div>
         );
     }

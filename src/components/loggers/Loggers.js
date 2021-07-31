@@ -36,30 +36,17 @@ class Loggers extends React.Component {
             <div className="page">
                 <h1>Loggers</h1>
 
-                <table width="100%">
-                    <tr>
-                        <td>
-                            <b>Start</b>
-                        </td>
-                        <td>
-                            <DateTimePicker
-                                onChange={this.onChangeStart}
-                                value={this.state.start}
-                            />
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>
-                            <b>End</b>
-                        </td>
-                        <td>
-                            <DateTimePicker
-                                onChange={this.onChangeEnd}
-                                value={this.state.end}
-                            />
-                        </td>
-                    </tr>
-                </table>
+                <b>Start</b>
+                <DateTimePicker
+                    onChange={this.onChangeStart}
+                    value={this.state.start}
+                />
+                <b>End</b>
+                <DateTimePicker
+                    onChange={this.onChangeEnd}
+                    value={this.state.end}
+                />
+                
                 <Router>
                     <Switch>
                         <Route exact path="/loggers">
