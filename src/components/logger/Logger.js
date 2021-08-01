@@ -68,7 +68,7 @@ class LoggerR extends React.Component {
         },
         options: {
             maintainAspectRatio: true,
-            aspectRatio:1.32,
+            aspectRatio:1.1,
             animation: false,
             hover: {
                 animationDuration: 0
@@ -153,7 +153,7 @@ class LoggerR extends React.Component {
 
         
         return (
-            <div style={{ overflow: "hidden" }}>
+            <div>
                 <button className="button" onClick={this.updateData}>show</button>
                 <h2>{this.props.logger.name}</h2>
                 {loading}
