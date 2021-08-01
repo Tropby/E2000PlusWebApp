@@ -14,6 +14,10 @@ class Connection extends React.Component {
         this.passwordChanged = this.passwordChanged.bind(this);
 
         this.updatePort = this.updatePort.bind(this);
+
+        if (localStorage.key("host") !== null) {
+            this.connect();
+        }
     }
 
     getData(id, start, end) {
@@ -25,6 +29,12 @@ class Connection extends React.Component {
     }
 
     connect() {
+
+        localStorage.setItem("username", this.state.connection.username);
+        localStorage.setItem("password", this.state.connection.password);
+        localStorage.setItem("host", this.state.connection.host);
+        localStorage.setItem("port", this.state.connection.port);
+
         let state = this.state;
         this.state.connection.login().then(
             function () {

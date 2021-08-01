@@ -23,24 +23,35 @@ class App extends React.Component {
         categories: [],
         ports: [],
         loggers: [],
-        connection: new E2000API(window.location.hostname, (window.location.port ? window.location.port : (window.location.protocol == "https:" ? 443 : 80)))
+        connection: new E2000API(window.location.hostname, (window.location.port ? window.location.port : (window.location.protocol === "https:" ? 443 : 80)))
     }
 
     constructor() {
         super();
-        setInterval(
-            function () {
-                if (!this.state.connection.isConnected) {
-                    window.location.href = "/app/index.htm#/devices";
-                }
-                this.state.connection.refreshToken().then((token) => { }, (error) => { });
-            }.bind(this),
-            5000
-        );
+
+        if( localStorage.key("host") !== null )
+            this.state.connection.host = localStorage.getItem("host");
+        if (localStorage.key("port") !== null)
+            this.state.connection.port = localStorage.getItem("port");
+        if (localStorage.key("username") !== null)
+            this.state.connection.username = localStorage.getItem("username");
+        if (localStorage.key("password") !== null)
+            this.state.connection.password = localStorage.getItem("password");
 
         this.setRooms = this.setRooms.bind(this);
         this.setCategories = this.setCategories.bind(this);
         this.setLogger = this.setLogger.bind(this);
+        this.updateToken = this.updateToken.bind(this);
+
+        this.updateToken();
+        setInterval(this.updateToken, 5000);
+    }
+
+    updateToken() {
+        if (!this.state.connection.isConnected && window.location.href !== "/app/index.htm#/devices") {
+            window.location.href = "/app/index.htm#/devices";
+        }
+        this.state.connection.refreshToken().then((token) => { }, (error) => { });
     }
 
     setRooms(rooms) {
