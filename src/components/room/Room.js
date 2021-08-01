@@ -12,17 +12,16 @@ class Room extends React.Component {
         this.props.ports.forEach(element => {
 
             // Show a virtual output
-            switch (element.TYPE)
-            {
+            switch (element.TYPE) {
                 case "OUT":
                     portList.push(<OUT element={element} />);
                     break;
-                
+
                 case "DEBUGIN":
                     portList.push(<IN element={element} />);
                     break;
-                
-                default:                    
+
+                default:
                     break;
             }
         });

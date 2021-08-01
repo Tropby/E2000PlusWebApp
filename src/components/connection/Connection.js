@@ -23,12 +23,12 @@ class Connection extends React.Component {
     updatePort(type, id, port, value) {
         this.state.connection.setPort(type, id, port, value);
     }
-    
+
     connect() {
         let state = this.state;
         this.state.connection.login().then(
             function () {
-                this.setState({connection: state.connection});
+                this.setState({ connection: state.connection });
 
                 state.connection.portData().then((data) => {
 
@@ -164,7 +164,7 @@ class Connection extends React.Component {
                             </td>
                         </tr>
                     </tbody>
-                </table>                
+                </table>
                 <h3>Host/IP</h3>
                 <input type="text" value={this.state.connection.host} onChange={this.hostChanged} />
                 <h3>{this.state.connection.https} Port</h3>

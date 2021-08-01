@@ -12,7 +12,7 @@ class IN extends React.Component {
     componentDidMount() {
         this.setState({ element: this.props.element });
     }
-    
+
     onClick() {
         let value;
 
@@ -20,19 +20,17 @@ class IN extends React.Component {
             value = 0;
         else
             value = 1;
-        
+
         this.props.element.outputs[0].updatePort("OUT", this.props.element.ID, 0, value);
     };
 
 
     render() {
         let active;
-        if (parseFloat(this.props.element.outputs[0].value))
-        {
+        if (parseFloat(this.props.element.outputs[0].value)) {
             active = "activeClickable"
         }
-        else
-        {
+        else {
             active = "inactiveClickable"
         }
 

@@ -12,7 +12,7 @@ import Logger from "../logger/Logger";
 class Loggers extends React.Component {
 
     state = {
-        start: new Date( new Date() - 1000 * 60 *60),
+        start: new Date(new Date() - 1000 * 60 * 60),
         end: new Date()
     }
 
@@ -46,7 +46,7 @@ class Loggers extends React.Component {
                     onChange={this.onChangeEnd}
                     value={this.state.end}
                 />
-                
+
                 <Router>
                     <Switch>
                         <Route exact path="/loggers">

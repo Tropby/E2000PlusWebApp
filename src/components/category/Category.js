@@ -28,8 +28,8 @@ class Category extends React.Component {
         return (
             <div>
                 <h2>{this.props.name}</h2>
-                <div>                    
-                    {portList.map((e,i) => <div key={"port_" + i}>{e}</div >)}
+                <div>
+                    {portList.map((e, i) => <div key={"port_" + i}>{e}</div >)}
                 </div>
             </div>
         );

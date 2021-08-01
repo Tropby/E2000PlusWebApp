@@ -86,19 +86,16 @@ class LoggerR extends React.Component {
     }
 
     shouldComponentUpdate() {
-        if (this.end !== this.props.end)
-        {
+        if (this.end !== this.props.end) {
             this.updateData();
         }
-        
-        else if (this.start !== this.props.start)
-        {
-            this.updateData();            
+
+        else if (this.start !== this.props.start) {
+            this.updateData();
         }
 
         let u = this.state.update;
-        if (u)
-        {         
+        if (u) {
             this.setState({ update: false });
         }
         return u;
@@ -122,9 +119,8 @@ class LoggerR extends React.Component {
         this.props.logger.getData(id, this.props.start, this.props.end).then((data) => {
             this.setState((state) => {
                 state.data.labels = [];
-                for (let i = 0; i < 8; i++)
-                {
-                    state.data.datasets[i].label = data.header[i];                    
+                for (let i = 0; i < 8; i++) {
+                    state.data.datasets[i].label = data.header[i];
                     state.data.datasets[i].hidden = (data.header[i] === "")
                     state.data.datasets[i].data = [];
                 }
@@ -135,7 +131,7 @@ class LoggerR extends React.Component {
                         state.data.datasets[i].data.push(element.values[i]);
                     }
                 });
-                
+
                 state.update = true;
                 return state;
             });

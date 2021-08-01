@@ -6,8 +6,7 @@ class OUT extends React.Component {
 
         let active;
 
-        switch (this.props.element.vars.TYPE)
-        {
+        switch (this.props.element.vars.TYPE) {
             case "0":
                 if (parseFloat(this.props.element.inputs[0].value)) {
                     active = <div className="active"></div>
@@ -16,11 +15,11 @@ class OUT extends React.Component {
                     active = <div className="inactive"></div>
                 }
                 break;
-            
+
             case "1":
                 active = <div>{this.props.element.inputs[0].value} {this.props.element.vars.SUFFIX}</div>
                 break;
-            
+
             default:
                 break;
         }

@@ -26,13 +26,11 @@ class E2000API {
         this.port = port;
     }
 
-    webSocketSend(msg)
-    {
+    webSocketSend(msg) {
         this.ws.send(JSON.stringify(msg));
     }
 
-    webSocketLogin()
-    {
+    webSocketLogin() {
         let msg = {
             command: "L",
             data: {
@@ -42,8 +40,7 @@ class E2000API {
         this.webSocketSend(msg);
     }
 
-    webSocketPing()
-    {
+    webSocketPing() {
         let msg = {
             command: "N",
             data: {}
@@ -51,8 +48,7 @@ class E2000API {
         this.webSocketSend(msg);
     }
 
-    info()
-    {
+    info() {
         let msg = {
             command: "I",
             data: {}
@@ -60,8 +56,7 @@ class E2000API {
         this.webSocketSend(msg);
     }
 
-    setPort(type, id, port, value)
-    {
+    setPort(type, id, port, value) {
         let msg = {
             command: "P",
             data: {
@@ -72,11 +67,10 @@ class E2000API {
         this.webSocketSend(msg);
     }
 
-    webSocketConnect()
-    {
+    webSocketConnect() {
         this.ws = new WebSocket(this.wss + "://" + this.host + ":" + this.port + "/msg", "e2000");
 
-        this.ws.onopen = function(){
+        this.ws.onopen = function () {
             this.webSocketLogin();
         }.bind(this);
 
@@ -105,48 +99,43 @@ class E2000API {
             this.ws.close();
         };
 
-        this.ws.onmessage = function(evt) {
-            try
-            {
+        this.ws.onmessage = function (evt) {
+            try {
                 let json = JSON.parse(evt.data);
 
-                switch (json.command)
-                {
+                switch (json.command) {
                     case "N":
                         this.webSocketPing();
                         break;
-                    
+
                     case "L":
-                        if (json.data.result === "OK")
-                        {
+                        if (json.data.result === "OK") {
                             this.webSocketLoggedIn = true;
                             this.onWebsocketLoggedIn();
                         }
                         break;
-                    
+
                     case "P":
                         this.onPortChanged(json.data);
                         break;
-                    
+
                     case "I":
                         this.onInfoReceived(json.data);
                         break;
-                    
+
                     default:
                         console.warn("unknwon command received from e2000 mcu!", json);
                         break;
                 }
             }
-            catch (e)
-            {
+            catch (e) {
                 console.error(e);
             }
 
         }.bind(this);
     };
 
-    logicBlock(blockId)
-    {
+    logicBlock(blockId) {
         return new Promise((resolve, reject) => {
             fetch(this.https + "://" + this.host + ":" + this.port + "/api/" + this.token + "/logicBlock/" + blockId)
                 .then(res => res.json())
@@ -183,8 +172,8 @@ class E2000API {
     }
 
     loggerData(name, startDate, endDate) {
-        startDate = Math.floor( startDate.getTime() / 1000.0 );
-        endDate = Math.floor( endDate.getTime() / 1000.0 );
+        startDate = Math.floor(startDate.getTime() / 1000.0);
+        endDate = Math.floor(endDate.getTime() / 1000.0);
         return new Promise((resolve, reject) => {
             fetch(this.https + "://" + this.host + ":" + this.port + "/api/" + this.token + "/logger/" + name + "/" + startDate + "/" + endDate)
                 .then(res => res.json())
@@ -204,8 +193,7 @@ class E2000API {
         });
     }
 
-    refreshToken()
-    {
+    refreshToken() {
         return new Promise((resolve, reject) => {
             fetch(this.https + "://" + this.host + ":" + this.port + "/api/" + this.token + "/refreshToken")
                 .then(res => res.json())
@@ -224,8 +212,7 @@ class E2000API {
         });
     };
 
-    login()
-    {
+    login() {
         return new Promise((resolve, reject) => {
             timeout(500, fetch(this.https + "://" + this.host + ":" + this.port + "/api/login/" + this.username + "/" + this.password))
                 .then(res => res.json())
@@ -236,8 +223,7 @@ class E2000API {
                             this.token = result.data.apiToken;
                             resolve();
                         }
-                        else
-                        {
+                        else {
                             reject();
                         }
                     },
@@ -249,8 +235,7 @@ class E2000API {
         });
     };
 
-    startPortTransfer()
-    {
+    startPortTransfer() {
         if (this.webSocketLoggedIn) {
             let msg = {
                 command: "S",
@@ -264,8 +249,7 @@ class E2000API {
         }
     }
 
-    portData()
-    {
+    portData() {
         return new Promise((resolve, reject) => {
             fetch(this.https + "://" + this.host + ":" + this.port + "/api/" + this.token + "/ports")
                 .then(res => res.json())
@@ -282,8 +266,7 @@ class E2000API {
         });
     }
 
-    debugData(enable)
-    {
+    debugData(enable) {
         if (this.webSocketLoggedIn) {
             let msg = {
                 command: "C",
@@ -300,10 +283,8 @@ class E2000API {
         }
     }
 
-    busData(enable)
-    {
-        if (this.webSocketLoggedIn)
-        {
+    busData(enable) {
+        if (this.webSocketLoggedIn) {
             let msg = {
                 command: "C",
                 data: {
@@ -314,8 +295,7 @@ class E2000API {
             this.webSocketSend(msg);
             return true;
         }
-        else
-        {
+        else {
             return false;
         }
     }

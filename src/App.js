@@ -29,8 +29,7 @@ class App extends React.Component {
         super();
         setInterval(
             function () {
-                if (!this.state.connection.isConnected)
-                {
+                if (!this.state.connection.isConnected) {
                     window.location.href = "/app/index.htm#/devices";
                 }
                 this.state.connection.refreshToken().then((token) => { }, (error) => { });
@@ -43,8 +42,7 @@ class App extends React.Component {
         this.setLogger = this.setLogger.bind(this);
     }
 
-    setRooms(rooms)
-    {
+    setRooms(rooms) {
         this.setState(
             {
                 rooms: rooms
@@ -52,8 +50,7 @@ class App extends React.Component {
         )
     }
 
-    setLogger(logger)
-    {
+    setLogger(logger) {
         this.setState({ loggers: logger });
     }
 
@@ -73,21 +70,19 @@ class App extends React.Component {
             state.connection.startPortTransfer();
         };
 
-        state.connection.onPortChanged = function(data) {
+        state.connection.onPortChanged = function (data) {
             let name = data.name.split(".");
             let type = name[0];
             let id = name[1];
             let port = name[2];
             let value = data.value;
 
-            switch (type)
-            {
+            switch (type) {
                 case "OUT":
                     this.setState(state => {
                         state.rooms.forEach((element) => {
                             element.ports.forEach((element) => {
-                                if (element.ID === id)
-                                {
+                                if (element.ID === id) {
                                     element.outputs[port].value = parseFloat(value);
                                 }
                             });
@@ -104,7 +99,7 @@ class App extends React.Component {
                         return state;
                     });
                     break;
-                
+
                 case "IN":
                     this.setState(state => {
                         state.rooms.forEach((element) => {
@@ -126,8 +121,8 @@ class App extends React.Component {
                         return state;
                     });
                     break;
-                
-                default:                    
+
+                default:
                     break;
             }
         }.bind(this);
@@ -136,32 +131,32 @@ class App extends React.Component {
     render() {
         return (
             <>
-            <Router>
-                <Switch>
-                    <Route exact path="/">
-                        <div className="page">
-                            <h1>E2000 Plus - GUI</h1>
-                        </div>
-                    </Route>
-                    <Route path="/devices">
-                        <Connections connection={this.state.connection} setRooms={this.setRooms} setCategories={this.setCategories} setLogger={this.setLogger} />
-                    </Route>
-                    <Route path="/rooms">
-                        <Rooms rooms={this.state.rooms} />
-                    </Route>
-                    <Route path="/categories">
-                        <Categories categories={this.state.categories} />
-                    </Route>
-                    <Route path="/loggers">
-                        <Loggers loggers={this.state.loggers} />
-                    </Route>
-                </Switch>
-                <div id="navbar">
-                    <Link to="/devices">Devices</Link>
-                    <Link to="/rooms">Rooms</Link>
-                    <Link to="/categories">Categories</Link>
-                    <Link to="/loggers">Logger</Link>
-                </div>
+                <Router>
+                    <Switch>
+                        <Route exact path="/">
+                            <div className="page">
+                                <h1>E2000 Plus - GUI</h1>
+                            </div>
+                        </Route>
+                        <Route path="/devices">
+                            <Connections connection={this.state.connection} setRooms={this.setRooms} setCategories={this.setCategories} setLogger={this.setLogger} />
+                        </Route>
+                        <Route path="/rooms">
+                            <Rooms rooms={this.state.rooms} />
+                        </Route>
+                        <Route path="/categories">
+                            <Categories categories={this.state.categories} />
+                        </Route>
+                        <Route path="/loggers">
+                            <Loggers loggers={this.state.loggers} />
+                        </Route>
+                    </Switch>
+                    <div id="navbar">
+                        <Link to="/devices">Devices</Link>
+                        <Link to="/rooms">Rooms</Link>
+                        <Link to="/categories">Categories</Link>
+                        <Link to="/loggers">Logger</Link>
+                    </div>
                 </Router>
             </>
         );

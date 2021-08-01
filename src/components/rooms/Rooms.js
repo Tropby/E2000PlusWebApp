@@ -22,7 +22,7 @@ class Rooms extends React.Component {
                         {this.props.rooms.map((r) => <Route key={"room_" + r.name} exact path={"/rooms/" + r.name}><Room name={r.name} ports={r.ports} /></Route>)}
                     </Switch>
                 </Router>
-                
+
             </div>
         );
     }
