@@ -68,13 +68,14 @@ class LoggerR extends React.Component {
         },
         options: {
             maintainAspectRatio: true,
-            aspectRatio: (window.innerWidth > window.innerHeight ? window.innerWidth / (window.innerHeight - 200) : window.innerWidth / (window.innerHeight - 80)),
+            aspectRatio:1.32,
             animation: false,
             hover: {
                 animationDuration: 0
             },
             responsiveAnimationDuration: 0
-        }
+        },
+        loading: false
     }
 
     end = new Date();
@@ -85,15 +86,11 @@ class LoggerR extends React.Component {
         this.updateData = this.updateData.bind(this);
     }
 
+    componentDidMount() {
+        this.updateData();
+    }
+
     shouldComponentUpdate() {
-        if (this.end !== this.props.end) {
-            this.updateData();
-        }
-
-        else if (this.start !== this.props.start) {
-            this.updateData();
-        }
-
         let u = this.state.update;
         if (u) {
             this.setState({ update: false });
@@ -112,12 +109,18 @@ class LoggerR extends React.Component {
 
         this.setState((state) => {
             state.data.labels = [];
+            for (let i = 0; i < 8; i++) {
+                state.data.datasets[i].data = [];
+            }
             return state;
         });
 
         let id = this.props.logger.id;
+        this.state.update = true;
+        this.setState({ loading: true });
         this.props.logger.getData(id, this.props.start, this.props.end).then((data) => {
             this.setState((state) => {
+                state.loading = false;
                 state.data.labels = [];
                 for (let i = 0; i < 8; i++) {
                     state.data.datasets[i].label = data.header[i];
@@ -139,11 +142,22 @@ class LoggerR extends React.Component {
     }
 
     render() {
+
+        let loading = <div></div>
+        if (this.state.loading)
+            loading = <div>loading....</div>
+        
+        let show = { display: "inline" };
+        if (this.state.loading)
+            show = { display: "none" };
+
+        
         return (
             <div style={{ overflow: "hidden" }}>
+                <button className="button" onClick={this.updateData}>show</button>
                 <h2>{this.props.logger.name}</h2>
-                <Line data={this.getChartData} options={this.state.options} />
-                <button className="button" onClick={this.updateData}>Update</button>
+                {loading}
+                <Line style={show} data={this.getChartData} options={this.state.options} />
             </div>
         );
     }

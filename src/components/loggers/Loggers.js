@@ -12,6 +12,10 @@ import Logger from "../logger/Logger";
 class Loggers extends React.Component {
 
     state = {
+        startDate: new Date(new Date() - 1000 * 60 * 60),
+        startTime: new Date(new Date() - 1000 * 60 * 60),
+        endDate : new Date(),
+        endTime: new Date(),
         start: new Date(new Date() - 1000 * 60 * 60),
         end: new Date()
     }
@@ -19,40 +23,84 @@ class Loggers extends React.Component {
     constructor() {
         super();
 
-        this.onChangeStart = this.onChangeStart.bind(this);
-        this.onChangeEnd = this.onChangeEnd.bind(this);
+        this.onChangeStartDate = this.onChangeStartDate.bind(this);
+        this.onChangeEndDate = this.onChangeEndDate.bind(this);
+        this.onChangeStartTime = this.onChangeStartTime.bind(this);
+        this.onChangeEndTime = this.onChangeEndTime.bind(this);
     }
 
-    onChangeStart(e) {
-        this.setState({ start: e });
+    onChangeStartDate(e) {
+        let t = new Date(e.target.value);
+        this.setState({ startDate: t });
+        this.state.startDate = t;
+        this.updateDateTime();
     }
 
-    onChangeEnd(e) {
-        this.setState({ end: e });
+    onChangeEndDate(e) {
+        let t = new Date(e.target.value);
+        this.setState({ endDate: t });
+        this.state.endDate = t;
+        this.updateDateTime();
+    }
+
+    onChangeStartTime(e)
+    {
+        let t = new Date("1970-01-01T" + e.target.value + ":00");
+        this.setState({ startTime: t });
+        this.state.startTime = t;
+        this.updateDateTime();
+    }
+
+    onChangeEndTime(e) {
+        let t = new Date("1970-01-01T" + e.target.value + ":00");
+        this.setState({ endTime: t });
+        this.state.endTime = t;
+        this.updateDateTime();
+    }
+
+    updateDateTime()
+    {
+        let startDateValue = this.state.startDate.toISOString().split("T")[0];
+        let endDateValue = this.state.endDate.toISOString().split("T")[0];
+        let startTimeValue = this.state.startTime.toTimeString().substr(0, 5);
+        let endTimeValue = this.state.endTime.toTimeString().substr(0, 5);
+
+        this.setState({
+            start: new Date(startDateValue + "T" + startTimeValue + ":00"),
+            end: new Date(endDateValue + "T" + endTimeValue + ":00")
+        });
     }
 
     render() {
+
+        let startDateValue = this.state.startDate.toISOString().split("T")[0];
+        let endDateValue = this.state.endDate.toISOString().split("T")[0];
+        let startTimeValue = this.state.startTime.toTimeString().substr(0, 5);
+        let endTimeValue = this.state.endTime.toTimeString().substr(0, 5);
+
         return (
             <div className="page">
                 <h1>Loggers</h1>
 
                 <b>Start</b>
-                <DateTimePicker
-                    onChange={this.onChangeStart}
-                    value={this.state.start}
-                />
+                <div className="dateTime">
+                    <input type="date" value={startDateValue} onChange={this.onChangeStartDate} />
+                    <input type="time" value={startTimeValue} onChange={this.onChangeStartTime} />
+                </div>
                 <b>End</b>
-                <DateTimePicker
-                    onChange={this.onChangeEnd}
-                    value={this.state.end}
-                />
+                <div className="dateTime">
+                    <input type="date" value={endDateValue} onChange={this.onChangeEndDate} />
+                    <input type="time" value={endTimeValue} onChange={this.onChangeEndTime} />
+                </div>
 
                 <Router>
                     <Switch>
                         <Route exact path="/loggers">
                             {this.props.loggers.map((r) => <Link key={r.id} to={"/loggers/" + r.id}>{r.name}</Link>)}
                         </Route>
-                        {this.props.loggers.map((r) => <Route key={r.id} exact path={"/loggers/" + r.id}><Logger start={this.state.start} end={this.state.end} logger={r} /></Route>)}
+                        {this.props.loggers.map((r) => <Route key={r.id} exact path={"/loggers/" + r.id}>
+                            <Logger start={this.state.start} end={this.state.end} logger={r} />
+                        </Route>)}
                     </Switch>
                 </Router>
 

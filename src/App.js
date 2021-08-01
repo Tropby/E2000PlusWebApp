@@ -29,7 +29,7 @@ class App extends React.Component {
     constructor() {
         super();
 
-        if( localStorage.key("host") !== null )
+        if (localStorage.key("host") !== null)
             this.state.connection.host = localStorage.getItem("host");
         if (localStorage.key("port") !== null)
             this.state.connection.port = localStorage.getItem("port");
@@ -44,14 +44,38 @@ class App extends React.Component {
         this.updateToken = this.updateToken.bind(this);
 
         this.updateToken();
-        setInterval(this.updateToken, 5000);
+
+        document.addEventListener("visibilitychange", function () {
+            console.log("visibilitychange");
+            if (document.hidden) {
+                console.log("hidden!");            
+            }
+            else {
+                this.updateToken();
+            }
+        }.bind(this), false);
     }
 
     updateToken() {
+
+        if (this.updateTimer)
+            clearTimeout(this.updateTimer);
+
         if (!this.state.connection.isConnected && window.location.href !== "/app/index.htm#/devices") {
             window.location.href = "/app/index.htm#/devices";
         }
-        this.state.connection.refreshToken().then((token) => { }, (error) => { });
+        
+        if (!document.hidden)
+        {
+            if (this.state.connection.isConnected)
+            {
+                this.state.connection.refreshToken().then(
+                    (token) => { },
+                    (error) => { });
+            }
+            
+            this.updateTimer = setTimeout(this.updateToken, 5000);
+        }
     }
 
     setRooms(rooms) {

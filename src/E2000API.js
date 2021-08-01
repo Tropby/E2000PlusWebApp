@@ -9,6 +9,9 @@ class E2000API {
     webSocketLoggedIn = false;
     isConnected = false;
 
+    lastMessage = null;
+    lastTokenUpdate = null;
+
     wss = (window.location.protocol !== "https:" ? "ws" : "wss");
     https = (window.location.protocol !== "https:" ? "http" : "https");
 
@@ -27,6 +30,7 @@ class E2000API {
     }
 
     webSocketSend(msg) {
+        if (this.ws === null) return;
         this.ws.send(JSON.stringify(msg));
     }
 
@@ -68,8 +72,19 @@ class E2000API {
     }
 
     webSocketConnect() {
-        this.ws = new WebSocket(this.wss + "://" + this.host + ":" + this.port + "/msg", "e2000");
+        if (typeof this.ws !== "undefined")
+        {
+            if (this.ws !== null) {
+                console.log("Try to close connection!");
+                this.ws.onclose = e => {
+                    console.log("Old Connection closed!");
+                };
+                this.ws.close();
+                this.ws = null;
+            }
+        }
 
+        this.ws = new WebSocket(this.wss + "://" + this.host + ":" + this.port + "/msg", "e2000");
         this.ws.onopen = function () {
             this.webSocketLogin();
         }.bind(this);
@@ -77,14 +92,16 @@ class E2000API {
         this.ws.onclose = e => {
             console.log(
                 `Socket is closed.`,
-                e.reason
+                e
             );
+
+            this.ws = null;
 
             setTimeout(
                 function () {
                     this.webSocketConnect();
                 }.bind(this),
-                5000
+                1000
             );
         };
 
@@ -200,12 +217,18 @@ class E2000API {
                 .then(
                     (result) => {
                         if (result.code === "okay") {
+                            this.webSocketPing();
                             resolve(result.data);
                         }
                         else
+                        {
+                            console.log("update token failed", result);
+                            this.isConnected = false;
                             reject(result);
+                        }
                     },
                     (error) => {
+                        this.isConnected = false;
                         reject(error);
                     }
                 )
