@@ -14,6 +14,7 @@ import Loggers from "./components/loggers/Loggers.js"
 
 import "./css/index.css"
 import "./css/bg.svg"
+import "./css/room.svg"
 
 class App extends React.Component {
 
@@ -152,10 +153,10 @@ class App extends React.Component {
                         </Route>
                     </Switch>
                     <div id="navbar">
-                        <Link to="/devices">Devices</Link>
-                        <Link to="/rooms">Rooms</Link>
-                        <Link to="/categories">Categories</Link>
-                        <Link to="/loggers">Logger</Link>
+                        <Link to="/devices" id="deviceLink"></Link>
+                        <Link to="/rooms" id="roomLink"></Link>
+                        <Link to="/categories" id="categoryLink"></Link>
+                        <Link to="/loggers" id="loggerLink"></Link>
                     </div>
                 </Router>
             </>

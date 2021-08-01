@@ -8,7 +8,8 @@ body, html {
     background-repeat: no-repeat;
     color: #eee;
     height: calc( 100%);
-    overflow: scroll;
+    overflow: auto;
+    margin-bottom: 50px;
 }
 
 * {
@@ -109,11 +110,33 @@ code {
 #navbar a {
     padding: 10px;
     display: block;
+    height: 50px;
+    width: 50px;
+    border-radius: 10px;
     margin: 10px 5px 10px 5px;
     border-left: 1px solid #111;
     border-right: 1px solid #111;
     background-color: #ddd;
-    border-radius: 1em;
+}
+
+#deviceLink {
+    background-image: url("device.svg");
+    background-size: cover;
+}
+
+#categoryLink {
+    background-image: url("category.svg");
+    background-size: cover;
+}
+
+#loggerLink {
+    background-image: url("logger.svg");
+    background-size: cover;
+}
+
+#roomLink {
+    background-image: url("room.svg");
+    background-size: cover;
 }
 
 input[type=text], input[type=date], input[type=time], input[type=password] {
@@ -138,12 +161,11 @@ input[type=text], input[type=date], input[type=time], input[type=password] {
 }
 
 .react-datetime-picker {
-    width: calc( 100% - 20px );
+    width: calc( 100% - 20px);
     margin: 10px;
 }
 
-.state
-{
+.state {
     left: 10px;
     top: 10px;
     width: 20px;
