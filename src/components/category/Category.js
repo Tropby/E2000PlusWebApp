@@ -1,5 +1,6 @@
 import React from "react";
 import IN from "../in/IN"
+import AIN from "../ain/AIN"
 import OUT from "../out/OUT"
 
 class Category extends React.Component {
@@ -20,6 +21,10 @@ class Category extends React.Component {
                     portList.push(<IN element={element} />);
                     break;
 
+                case "AIN":
+                    portList.push(<AIN element={element} />);
+                    break;
+                
                 default:
                     break;
             }

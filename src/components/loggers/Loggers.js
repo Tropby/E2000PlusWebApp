@@ -12,12 +12,12 @@ import Logger from "../logger/Logger";
 class Loggers extends React.Component {
 
     state = {
-        startDate: new Date(new Date() - 1000 * 60 * 60),
-        startTime: new Date(new Date() - 1000 * 60 * 60),
-        endDate : new Date(),
-        endTime: new Date(),
-        start: new Date(new Date() - 1000 * 60 * 60),
-        end: new Date()
+        startDate: new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
+        startTime: new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
+        endDate: new Date(new Date().getTime() + 1000 * 60 * 60),
+        endTime: new Date(new Date().getTime() + 1000 * 60 * 60),
+        start: new Date(new Date().getTime() - 1000 * 60 * 60 * 24),
+        end: new Date(new Date().getTime() + 1000 * 60 * 60)
     }
 
     constructor() {

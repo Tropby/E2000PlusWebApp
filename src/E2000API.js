@@ -30,8 +30,13 @@ class E2000API {
     }
 
     webSocketSend(msg) {
-        if (this.ws === null) return;
-        this.ws.send(JSON.stringify(msg));
+        if (this.ws === null || typeof (this.ws) === "undefined") return;
+
+        let json = JSON.stringify(msg);
+        console.log(this, json);
+        if (this.ws.readyState === WebSocket.OPEN) {
+            this.ws.send(json);
+        }
     }
 
     webSocketLogin() {
@@ -85,11 +90,13 @@ class E2000API {
         }
 
         this.ws = new WebSocket(this.wss + "://" + this.host + ":" + this.port + "/msg", "e2000");
+
         this.ws.onopen = function () {
+            console.log("Websocket connected!");
             this.webSocketLogin();
         }.bind(this);
 
-        this.ws.onclose = e => {
+        this.ws.onclose = function (e) {
             console.log(
                 `Socket is closed.`,
                 e
@@ -103,10 +110,10 @@ class E2000API {
                 }.bind(this),
                 1000
             );
-        };
+        }.bind(this);
 
         // websocket onerror event listener
-        this.ws.onerror = err => {
+        this.ws.onerror = function (err) {
             console.error(
                 "Socket encountered error: ",
                 err.message,
@@ -114,7 +121,7 @@ class E2000API {
             );
 
             this.ws.close();
-        };
+        }.bind(this);
 
         this.ws.onmessage = function (evt) {
             try {
@@ -216,8 +223,7 @@ class E2000API {
                 .then(res => res.json())
                 .then(
                     (result) => {
-                        if (result.code === "okay") {
-                            this.webSocketPing();
+                        if (result.code === "okay") {                            
                             resolve(result.data);
                         }
                         else

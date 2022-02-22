@@ -70,7 +70,9 @@ class App extends React.Component {
             if (this.state.connection.isConnected)
             {
                 this.state.connection.refreshToken().then(
-                    (token) => { },
+                    (token) => { 
+                        this.state.connection.webSocketPing();
+                    },
                     (error) => { });
             }
             
