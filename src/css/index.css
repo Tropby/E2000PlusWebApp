@@ -1,0 +1,223 @@
+body, html {
+    margin: 0;
+    padding: 0;
+    font-family: BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+    background-image: url("bg.svg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #eee;
+    height: calc(100%);
+    overflow: auto;
+}
+
+* {
+    transition: all 0.5s ease-out !important;
+}
+
+h1, h2, h3 {
+    width: calc(100% - 10px);
+    margin: 5px;
+    text-align: center;
+}
+
+small {
+    font-size: 0.7em;
+}
+
+a, a:hover {
+    color: #111;
+    text-decoration: none;
+}
+
+code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+.page {
+    margin: 10px;
+    padding: 20px 5px;
+    border-radius: 5px;
+    margin-bottom: 150px;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 500px;
+    background-color: #EDEDED;
+    color: #111;
+}
+
+canvas {
+    margin-bottom: 90px;
+}
+
+@media (max-width: 480px) {
+    body {
+        padding: 0px;
+        margin: 0px;
+        background-image: none;
+        background-color: #EDEDED;
+    }
+
+    .page {
+        margin: 0px;
+        margin-bottom: 150px;
+        padding: 0px 5px;
+        border-radius: 0px;
+    }
+}
+
+.page a {
+    width: calc(100% - 60px);
+    margin: 0px 10px;
+    padding: 20px;
+    display: block;
+    border-bottom: 1px solid #111;
+}
+
+.page a:hover {
+    background-color: #DEDEDE;
+}
+
+.out, .in, .ain {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    margin: 10px;
+    padding: 10px;
+    width: calc(100% - 40px);
+    color: #111;
+    border-bottom: 1px solid #111;
+}
+
+.ainSlider {
+    width: 100%;
+    height: 25px;
+    margin: 10px 0px;
+    background-color: #555;
+}
+
+.ainSliderInner {
+    height: 25px;
+    width: 10%;
+    background-color: #00CC00;
+}
+
+.in {
+    cursor: pointer;
+}
+
+.active {
+    width: 40px;
+    height: 40px;
+    background-color: #00CC00;
+}
+
+.inactive {
+    width: 40px;
+    height: 40px;
+    background-color: #555;
+}
+
+.activeClickable {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #00CC00;
+}
+
+.inactiveClickable {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: #555;
+}
+
+#navbar {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    bottom: 0px;
+    left: 0px;
+    background-color: #0f141d;
+    width: 100%;
+    z-index: 1000;
+    box-shadow: #111 0px -1px 1px;
+    border-top: 1px solid #111;
+}
+
+#navbar a {
+    padding: 10px;
+    display: block;
+    height: 40px;
+    width: 40px;
+    border-radius: 10px;
+    margin: 10px 5px 10px 5px;
+    border-left: 1px solid #111;
+    border-right: 1px solid #111;
+    background-color: #ddd;
+}
+
+#deviceLink {
+    background-image: url("device.svg");
+    background-size: cover;
+}
+
+#categoryLink {
+    background-image: url("category.svg");
+    background-size: cover;
+}
+
+#loggerLink {
+    background-image: url("logger.svg");
+    background-size: cover;
+}
+
+#roomLink {
+    background-image: url("room.svg");
+    background-size: cover;
+}
+
+b {
+    padding-left: 7px;
+}
+
+input[type=text], input[type=date], input[type=time], input[type=password] {
+    width: calc(100% - 50px);
+    padding: 10px;
+    margin: 7px;
+    border-radius: 5px;
+}
+
+.button {
+    width: calc(100% - 25px);
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    background-color: #ccc;
+    cursor: pointer;
+}
+
+.connectionLink {
+    display: flex !important;
+    justify-content: space-between;
+}
+
+.react-datetime-picker {
+    width: calc(100% - 20px);
+    margin: 10px;
+}
+
+.state {
+    left: 10px;
+    top: 10px;
+    width: 20px;
+    height: 20px;
+    position: fixed;
+    border: 1px solid #111;
+    border-radius: 10px;
+    background-color: #FFF;
+}
+
+.dateTime input {
+    width: calc(50% - 45px);
+}
