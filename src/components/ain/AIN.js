@@ -21,13 +21,12 @@ class AIN extends React.Component {
 
         let target = evt.target;
 
-        if (target.className == "ainSliderInner")
+        if (target.className === "ainSliderInner")
         {
             target = target.parentElement
         }
 
         let x = evt.pageX - target.offsetLeft;
-        let y = evt.pageY - target.offsetTop;
         let w = parseFloat(target.clientWidth);
 
         let p = x / w * 100.0;
@@ -43,7 +42,7 @@ class AIN extends React.Component {
 
     render() {
         let active = parseFloat(this.props.element.outputs[0].value);
-        if (parseFloat(this.state.style.width) != active)
+        if (parseFloat(this.state.style.width) !== active)
         {
             this.setState({ style: {width: active + "%"} });
         }

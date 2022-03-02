@@ -73,7 +73,9 @@ class App extends React.Component {
                     (token) => { 
                         this.state.connection.webSocketPing();
                     },
-                    (error) => { });
+                    (error) => {
+                        console.log("error", error);
+                    });
             }
             
             this.updateTimer = setTimeout(this.updateToken, 5000);

@@ -157,7 +157,7 @@ class E2000API {
             }
 
         }.bind(this);
-    };
+    }
 
     logicBlock(blockId) {
         return new Promise((resolve, reject) => {
@@ -167,6 +167,8 @@ class E2000API {
                     (result) => {
                         if (result.code === "okay") {
                             resolve(result.data);
+                        } else {
+                            reject(result);
                         }
                     },
                     (error) => {
@@ -239,7 +241,7 @@ class E2000API {
                     }
                 )
         });
-    };
+    }
 
     login() {
         return new Promise((resolve, reject) => {
@@ -253,16 +255,16 @@ class E2000API {
                             resolve();
                         }
                         else {
-                            reject();
+                            reject(result);
                         }
                     },
                     (error) => {
                         this.isConnected = false;
-                        reject();
+                        reject(error);
                     }
                 )
         });
-    };
+    }
 
     startPortTransfer() {
         if (this.webSocketLoggedIn) {
@@ -286,6 +288,9 @@ class E2000API {
                     (result) => {
                         if (result.code === "okay") {
                             resolve(result.data);
+                        }
+                        else {
+                            reject(result);
                         }
                     },
                     (error) => {

@@ -5,7 +5,6 @@ import {
     Route,
     Link
 } from "react-router-dom";
-import DateTimePicker from 'react-datetime-picker';
 
 import Logger from "../logger/Logger";
 
@@ -32,14 +31,12 @@ class Loggers extends React.Component {
     onChangeStartDate(e) {
         let t = new Date(e.target.value);
         this.setState({ startDate: t });
-        this.state.startDate = t;
         this.updateDateTime();
     }
 
     onChangeEndDate(e) {
         let t = new Date(e.target.value);
         this.setState({ endDate: t });
-        this.state.endDate = t;
         this.updateDateTime();
     }
 
@@ -47,14 +44,12 @@ class Loggers extends React.Component {
     {
         let t = new Date("1970-01-01T" + e.target.value + ":00");
         this.setState({ startTime: t });
-        this.state.startTime = t;
         this.updateDateTime();
     }
 
     onChangeEndTime(e) {
         let t = new Date("1970-01-01T" + e.target.value + ":00");
         this.setState({ endTime: t });
-        this.state.endTime = t;
         this.updateDateTime();
     }
 

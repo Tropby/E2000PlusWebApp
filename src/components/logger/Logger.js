@@ -116,8 +116,8 @@ class LoggerR extends React.Component {
         });
 
         let id = this.props.logger.id;
-        this.state.update = true;
-        this.setState({ loading: true });
+
+        this.setState({ loading: true, update: true });
         this.props.logger.getData(id, this.props.start, this.props.end).then((data) => {
             this.setState((state) => {
                 state.loading = false;

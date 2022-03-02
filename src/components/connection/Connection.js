@@ -49,6 +49,10 @@ class Connection extends React.Component {
                         });
 
                         this.props.setLogger(data.logger);
+                    }, (error) => {
+                        state.connection.token = false;
+                        this.setState({ connection: state.connection });
+                        this.setState({ errorMessage: "Get logger failed [" + error.data.message + "]" });
                     });
 
 
@@ -102,12 +106,18 @@ class Connection extends React.Component {
                     this.props.setCategories(categories);
 
                     state.connection.webSocketConnect();
+                }, (error) => {
+                    state.connection.token = false;
+                    this.setState({ connection: state.connection });
+                    this.setState({ errorMessage: "Get port info failed [" + error.data.message + "]" });
                 });
             }.bind(this),
 
-            function () {
+            function (error) {
+                state.connection.token = false;
                 this.setState({ connection: state.connection });
-                console.log("Login failed!");
+                console.log(error);
+                this.setState({ errorMessage: "Login failed [" + error.data.message + "]" });
             }.bind(this)
         );
 
@@ -183,6 +193,7 @@ class Connection extends React.Component {
                 <input type="text" value={this.state.connection.username} onChange={this.usernameChanged} />
                 <h3>Password</h3>
                 <input type="password" value={this.state.connection.password} onChange={this.passwordChanged} />
+                {this.state.errorMessage}
                 <button className="button" onClick={this.connect}>connect</button>
             </div>
         );
