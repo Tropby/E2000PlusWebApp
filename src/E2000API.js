@@ -200,12 +200,12 @@ class E2000API {
     loggerData(name, startDate, endDate) {
         startDate = Math.floor(startDate.getTime() / 1000.0);
         endDate = Math.floor(endDate.getTime() / 1000.0);
-        return new Promise((resolve, reject) => {
+	return new Promise((resolve, reject) => {
             fetch(this.https + "://" + this.host + ":" + this.port + "/api/" + this.token + "/logger/" + name + "/" + startDate + "/" + endDate)
                 .then(res => res.json())
                 .then(
-                    (result) => {
-                        if (result.code === "okay") {
+        	     (result) => {
+                    	 if (result.code === "okay") {                       
                             resolve(result.data);
                         }
                         else {

@@ -1,26 +1,29 @@
 import React from "react";
 import { Line } from 'react-chartjs-2';
+import {CategoryScale} from 'chart.js'; 
+import Chart from 'chart.js/auto';
+Chart.register(CategoryScale);
 
 class LoggerR extends React.Component {
 
     state = {
         update: true,
         data: {
-            labels: [],
+            labels: ["A", "B", "C"],
             datasets: [
                 {
                     label: '#1',
-                    data: [],
+                    data: [1, 2, 3],
                     fill: false,
                     borderColor: "#FF0000",
-                    pointRadius: 0
+                    pointRadius: 1
                 },
                 {
                     label: '#2',
                     data: [],
                     fill: false,
                     borderColor: "#00FF00",
-                    pointRadius: 0
+                    pointRadius: 1
                 },
                 {
                     label: '#3',
@@ -98,8 +101,8 @@ class LoggerR extends React.Component {
         return u;
     }
 
-    getChartData = canvas => {
-        const { data } = this.state;
+    getChartData = canvas => {   
+        const { data } = this.state;        
         return data;
     }
 
@@ -108,6 +111,7 @@ class LoggerR extends React.Component {
         this.start = this.props.start;
 
         this.setState((state) => {
+            state.loading = true;
             state.data.labels = [];
             for (let i = 0; i < 8; i++) {
                 state.data.datasets[i].data = [];
@@ -120,7 +124,7 @@ class LoggerR extends React.Component {
         this.setState({ loading: true, update: true });
         this.props.logger.getData(id, this.props.start, this.props.end).then((data) => {
             this.setState((state) => {
-                state.loading = false;
+                
                 state.data.labels = [];
                 for (let i = 0; i < 8; i++) {
                     state.data.datasets[i].label = data.header[i];
@@ -133,33 +137,36 @@ class LoggerR extends React.Component {
                     for (let i = 0; i < 8; i++) {
                         state.data.datasets[i].data.push(element.values[i]);
                     }
+                    return;
                 });
 
-                state.update = true;
+                state.update = true;    
+                state.loading = false;           
                 return state;
             });
         });
     }
 
-    render() {
-
-        let loading = <div></div>
-        if (this.state.loading)
-            loading = <div>loading....</div>
-        
-        let show = { display: "inline" };
-        if (this.state.loading)
-            show = { display: "none" };
-
-        
-        return (
-            <div>
-                <button className="button" onClick={this.updateData}>show</button>
-                <h2>{this.props.logger.name}</h2>
-                {loading}
-                <Line style={show} data={this.getChartData} options={this.state.options} />
-            </div>
-        );
+    render() {        
+         if (this.state.loading)
+         {
+             return (
+                <div>
+                    <h2>{this.props.logger.name}</h2>
+                    <div>loading...</div>
+                </div>
+             );
+         }
+         else
+         {            
+            return (
+                <div>
+                    <button className="button" onClick={this.updateData}>update</button>
+                    <h2>{this.props.logger.name}</h2>
+                    <Line data={this.state.data} options={this.state.options} />
+                </div>
+            );
+        }
     }
 }
 
